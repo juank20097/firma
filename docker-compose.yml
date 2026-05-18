@@ -1,0 +1,42 @@
+﻿# ============================================================
+#  FirmaIessApi - Docker Compose de la aplicacion
+#  Autor: Juan Carlos Estevez Hidalgo
+#  Fecha: 07 may 2026
+#
+#  PREREQUISITO: El ecosistema de utilitarios debe estar
+#  corriendo antes de levantar este archivo:
+#    docker-compose -f docker-compose-utilitarios.yml up -d
+#
+#  Uso:
+#    Construir y levantar: docker-compose up -d --build
+#    Solo levantar:        docker-compose up -d
+#    Ver logs:             docker-compose logs -f
+#    Detener:              docker-compose down
+#    Reconstruir imagen:   docker-compose build --no-cache
+# ============================================================
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: firma-iess-api:0.0.1
+    container_name: firma_iess_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8090:8080"
+    networks:
+      - net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+    net:
+      driver: bridge

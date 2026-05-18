@@ -1,0 +1,32 @@
+﻿# ============================================================
+#  Bootstrap - Configuración de Vault
+#  Se carga ANTES que application.yaml
+#  Vault provee las credenciales críticas al arrancar.
+#
+#  Con VAULT_ENABLED=false el proyecto arranca sin Vault
+#  usando los valores del .env como fallback.
+# ============================================================
+spring:
+  cloud:
+    vault:
+      enabled: ${VAULT_ENABLED:false}
+      host: ${VAULT_HOST:localhost}
+      port: ${VAULT_PORT:8200}
+      scheme: ${VAULT_SCHEME:http}
+      authentication: TOKEN
+      token: ${VAULT_TOKEN:root-token}
+
+      # KV v2 — motor habilitado en vault-init
+      kv:
+        enabled: true
+        backend: FirmaIessApi
+        default-context: ""
+        application-name: ""
+        profiles-path: ""
+
+      # Paths específicos que Spring Cloud Vault leerá
+      generic:
+        enabled: false
+
+  config:
+    import: "optional:vault://"
