@@ -18,6 +18,9 @@ public class CertificadoEntity {
     @Column(name = "sistema", nullable = false, unique = true, length = 50)
     private String sistema;
 
+    @Column(name = "cedula", nullable = false, length = 13)
+    private String cedula;
+
     @Column(name = "certificado", nullable = false, columnDefinition = "TEXT")
     private String certificado;
 

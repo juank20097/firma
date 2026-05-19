@@ -25,8 +25,9 @@ public class CertificadoController {
     public ResponseEntity<?> obtenerCertificado(@PathVariable String sistema) {
         return certificadoRepo.findBySistema(sistema)
             .map(cert -> ResponseEntity.ok(Map.of(
-                "certificado", cert.getCertificado(),
-                "password",    cert.getPassword()
+                "cedula",       cert.getCedula(),
+                "certificado",  cert.getCertificado(),
+                "password",     cert.getPassword()
             )))
             .orElse(ResponseEntity.status(404).body(
                 Map.of("error", "No se encontró certificado para el sistema: " + sistema)
